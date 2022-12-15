@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
-
-
+import { floorsCount, liftCabinFlickeringDuration } from '../buildingConfig.js';
+import LiftCabin from './LiftCabin.vue';
 
 const props = defineProps(['lift', 'liftShaftIndex']);
 
@@ -19,7 +19,16 @@ const isLiftCabinFlickering = computed(() => props.lift.state.value === 'arrived
 
 <template>
   <div class="lift-shaft">
-    
+    <LiftCabin
+      :class="{
+        'lift-cabin-position': true,
+        'lift-cabin-flickering': isLiftCabinFlickering,
+      }"
+      :style="{ transform: liftCabinTransformValue }"
+      :lift-state="lift.state"
+      :moving-direction="props.lift.movingDirection"
+      :target-floor="lift.targetFloor"
+    />
   </div>
 </template>
 
