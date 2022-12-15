@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-
+import { liftShaftsCount } from '../buildingConfig.js';
 
 const props = defineProps(['floorState']);
 
@@ -25,7 +25,7 @@ const buttonChar = computed(() => (props.floorState.isLiftCalled.value ? '⦿' :
 .floor {
   height: 100px;
   display: grid;
-  grid-template: 1fr / repeat( 90px) 110px;
+  grid-template: 1fr / repeat(v-bind(liftShaftsCount), 90px) 110px;
   border-style: solid;
   border-color: #ebebeb;
   border-width: 0 1px 0 1px;
@@ -39,7 +39,7 @@ const buttonChar = computed(() => (props.floorState.isLiftCalled.value ? '⦿' :
 }
 .lift-control-panel {
   grid-row: 1 / 2;
-
+  grid-column: v-bind(liftShaftsCount + 1) / v-bind(liftShaftsCount + 1 + 1);
   margin: 5px;
   margin-left: 10px;
   padding: 3%;

@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
-
+import { liftShaftsCount, floorsCount, liftCabinFlickeringDuration } from '../buildingConfig.js';
 import { lifts, floors, callQueue } from '../store.js';
 import LiftShaft from './LiftShaft.vue';
 import Floor from './Floor.vue';
