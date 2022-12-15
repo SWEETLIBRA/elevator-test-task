@@ -108,9 +108,52 @@ const floors = {
   },
 };
 
+const callQueue = {
+  isInProcessing: false,
+  setIsInProcessing(value) { this.isInProcessing = value; },
+  callsInExecution: loadFromLocalStorage('callsInExecution') || [],
+  hasTargetFloorInProcessing(targetFloor) {
+    const result = !!this.callsInExecution.find((item) => item.targetFloor === targetFloor);
+    return result;
+  },
+  moveCallToCallsInExecution(liftId, targetFloor) {
+    this.callsToProcess = this.callsToProcess.slice(1);
+    this.callsInExecution.push({ liftId, targetFloor });
 
+    this.setCallsToProcessInLocalStorage();
+    this.setCallsInExecutionInLocalStorage();
+  },
+  removeCallFromExecution(targetFloor) {
+    this.callsInExecution = this.callsInExecution
+      .filter((item) => item.targetFloor !== targetFloor);
+
+    floors.setIsLiftCalled(targetFloor, false);
+
+    this.setCallsInExecutionInLocalStorage();
+  },
+  setCallsInExecutionInLocalStorage() {
+    saveInLocalStorage('callsInExecution', this.callsInExecution);
+  },
+  callsToProcess: loadFromLocalStorage('callsToProcess') || [],
+  isCallsToProcessEmpty() {
+    return this.callsToProcess.length === 0;
+  },
+  hasTargetFloorAmongCallsToProcess(targetFloor) {
+    return this.callsToProcess.includes(targetFloor);
+  },
+  getCallToProcess() { return this.callsToProcess[0]; },
+  addCallToProcess(targetFloor) {
+    this.callsToProcess.push(targetFloor);
+    floors.setIsLiftCalled(targetFloor, true);
+    this.setCallsToProcessInLocalStorage();
+  },
+  setCallsToProcessInLocalStorage() {
+    saveInLocalStorage('callsToProcess', this.callsToProcess);
+  },
+};
 
 export {
   lifts,
-  floors
+  floors,
+  callQueue,
 };
