@@ -94,8 +94,23 @@ const lifts = {
   selectLift(liftShaftIndex) { return this.items[liftShaftIndex - 1]; },
 };
 
+const floors = {
+  items: Array(floorsCount)
+    .fill()
+    .map((_, index) => ({
+      id: index + 1,
+      isLiftCalled: ref(loadFromLocalStorage(`Floor${index + 1}IsLiftCalled`) || false),
+    })),
+  selectFloorState(floorIndex) { return this.items[floorIndex - 1]; },
+  setIsLiftCalled(floorIndex, value) {
+    this.selectFloorState(floorIndex).isLiftCalled.value = value;
+    saveInLocalStorage(`Floor${floorIndex}IsLiftCalled`, value);
+  },
+};
+
 
 
 export {
-  lifts
+  lifts,
+  floors
 };
