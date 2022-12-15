@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 
 import { lifts, floors, callQueue } from '../store.js';
 import LiftShaft from './LiftShaft.vue';
-
+import Floor from './Floor.vue';
 
 const moveSelectedLift = (lift, targetFloor) => {
   lift.setTargetFloor(targetFloor);
@@ -78,7 +78,12 @@ onMounted(() => {
       />
     </div>
     <div class="floors">
-      
+      <Floor
+        v-for="floorIndex in floorsCount"
+        :key="floorIndex"
+        :floorState="floors.selectFloorState(floorIndex)"
+        @call-lift="processLiftCall"
+      />
     </div>
   </div>
 </template>
